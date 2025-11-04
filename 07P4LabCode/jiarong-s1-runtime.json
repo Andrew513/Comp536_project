@@ -1,0 +1,47 @@
+{
+  "target": "bmv2",
+  "p4info": "build/basic.p4.p4info.txt", // Jiarong: change the name basic.p4 here when you change the p4 file name
+  "bmv2_json": "build/basic.json",       // Jiarong: the json file name must be same with the p4info file name
+  // Jiarong: add table entries here
+  "table_entries": [
+    {
+      "table": "MyIngress.ipv4_lpm",    // Jiarong: table name, change according to your code
+      "default_action": true,           // Jiarong: set true, if the table has default action
+      "action_name": "MyIngress.drop",  // Jiarong: set the default action here, must be consistent with your code
+      "action_params": { }              // Jiarong: empty is no params
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": ["10.0.1.1", 32] // Jiarong: match key, change according to your code
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {                       // Jiarong: params when this entry is hit
+        "dstAddr": "00:00:00:00:01:01",
+        "port": 1
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": ["10.0.2.2", 32]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "00:00:00:02:02:00",
+        "port": 2
+      }
+    },
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "match": {
+        "hdr.ipv4.dstAddr": ["10.0.3.3", 32]
+      },
+      "action_name": "MyIngress.ipv4_forward",
+      "action_params": {
+        "dstAddr": "00:00:00:03:03:00",
+        "port": 3
+      }
+    }
+  ]
+}

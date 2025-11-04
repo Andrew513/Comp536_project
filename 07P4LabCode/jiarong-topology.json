@@ -1,0 +1,44 @@
+{
+    // Jiarong: define host here, must start with 'h'
+    "hosts": {
+        "h1": {
+            "ip": "10.0.1.1/24",
+            "mac": "08:00:00:00:01:11",
+            // Jiarong: The commands executed when the host is created
+            // it add routes and run arp
+            "commands": [
+                "route add default gw 10.0.1.10 dev eth0",
+                "arp -i eth0 -s 10.0.1.10 08:00:00:00:01:00"
+            ]
+        },
+        "h2": {
+            "ip": "10.0.2.2/24",
+            "mac": "08:00:00:00:02:22",
+            "commands": [
+                "route add default gw 10.0.2.20 dev eth0",
+                "arp -i eth0 -s 10.0.2.20 08:00:00:00:02:00"
+            ]
+        },
+        "h3": {
+            "ip": "10.0.3.3/24",
+            "mac": "08:00:00:00:03:33",
+            "commands": [
+                "route add default gw 10.0.3.30 dev eth0",
+                "arp -i eth0 -s 10.0.3.30 08:00:00:00:03:00"
+            ]
+        }
+    },
+    // Jiarong: define switches here, must start with 's'
+    // Jiarong: add the runtime file for each switch
+    "switches": {
+        "s1": { "runtime_json" : "s1-runtime.json" },
+        "s2": { "runtime_json" : "s2-runtime.json" },
+        "s3": { "runtime_json" : "s3-runtime.json" }
+    },
+    // Jiarong: add links here, if you want to set the link latency, just ["s1","s2", "5ms"]
+    // by default, the latency is 0ms
+    "links": [
+        ["h1", "s1"], ["s1", "s2"], ["s1", "s3"],
+        ["s3", "s2"], ["s2", "h2"], ["s3", "h3"]
+    ]
+}
